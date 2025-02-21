@@ -14,16 +14,20 @@ const Header = styled.header`
   top: 0;
   width: 100%;
   background: rgba(0, 0, 0, 0.9);
-  padding: 20px 40px;
+  padding: 1rem 2rem; /* Flexible padding */
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  @media (max-width: 768px) {
+    padding: 1rem; /* Smaller padding on mobile */
+    flex-direction: column; /* Stack on small screens */
+  }
 `;
 
 const Logo = styled.div`
-  font-size: 28px;
+  font-size: clamp(1.5rem, 4vw, 1.75rem); /* Scales with viewport */
   font-weight: 700;
   color: #00ff99;
   letter-spacing: 1px;
@@ -34,17 +38,27 @@ const Nav = styled.nav`
     list-style: none;
     display: flex;
     li {
-      margin-left: 30px;
+      margin-left: 1.5rem;
       a {
         color: #ffffff;
         text-decoration: none;
-        font-size: 16px;
+        font-size: clamp(0.875rem, 2.5vw, 1rem); /* Responsive font */
         font-weight: 500;
         text-transform: uppercase;
         transition: color 0.3s ease;
         &:hover {
           color: #00ff99;
         }
+      }
+    }
+  }
+  @media (max-width: 768px) {
+    ul {
+      flex-direction: column;
+      align-items: center;
+      margin-top: 1rem;
+      li {
+        margin: 0.5rem 0;
       }
     }
   }
@@ -58,7 +72,7 @@ const Hero = styled.section`
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 0 20px;
+  padding: 0 1rem;
   position: relative;
   &::before {
     content: '';
@@ -75,88 +89,82 @@ const Hero = styled.section`
     z-index: 2;
   }
   h1 {
-    font-size: 60px;
+    font-size: clamp(2rem, 10vw, 3.75rem); /* Responsive title */
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
   }
   p {
-    font-size: 20px;
+    font-size: clamp(1rem, 3vw, 1.25rem);
     font-weight: 300;
     color: #00ff99;
   }
 `;
 
 const CategorySection = styled.section`
-  padding: 80px 40px;
+  padding: clamp(2rem, 10vw, 5rem) 1rem; /* Flexible padding */
   text-align: center;
   background: #1a1a1a;
 `;
 
 const GearSection = styled.section`
-  padding: 80px 40px;
+  padding: clamp(2rem, 10vw, 5rem) 1rem;
   text-align: center;
   background: #1a1a1a;
 `;
 
 const CategoryTitle = styled.h2`
-  font-size: 40px;
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
   font-weight: 600;
-  margin-bottom: 50px;
+  margin-bottom: clamp(1.5rem, 5vw, 2.5rem);
   color: #00ff99;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 0.125rem;
 `;
 
 const GearTitle = styled.h2`
-  font-size: 40px;
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
   font-weight: 600;
-  margin-bottom: 30px;
+  margin-bottom: clamp(1rem, 3vw, 1.875rem);
   color: #00ff99;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 0.125rem;
 `;
 
 const ReelGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 30px;
-  max-width: 1400px;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(250px, 40vw, 320px), 1fr)); /* Flexible min width */
+  gap: 1.875rem;
+  max-width: 87.5rem;
   margin: 0 auto;
 `;
 
 const GearGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  max-width: 1200px;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(200px, 35vw, 300px), 1fr));
+  gap: 1.25rem;
+  max-width: 75rem;
   margin: 0 auto;
 `;
 
 const Reel = styled.div`
   background: #2a2a2a;
-  padding: 20px;
-  border-radius: 12px;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0, 255, 153, 0.2);
+    transform: translateY(-0.625rem);
+    box-shadow: 0 0.625rem 1.25rem rgba(0, 255, 153, 0.2);
   }
-  img {
+  img, iframe {
     width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  iframe {
-    width: 100%;
-    height: 220px;
-    border: none;
-    border-radius: 8px;
+    height: auto; /* Responsive height */
+    aspect-ratio: 16 / 9; /* Maintain video aspect ratio */
+    border-radius: 0.5rem;
   }
   p {
-    margin-top: 15px;
-    font-size: 16px;
+    margin-top: 0.9375rem;
+    font-size: clamp(0.875rem, 2vw, 1rem);
     font-weight: 400;
     color: #cccccc;
   }
@@ -164,47 +172,47 @@ const Reel = styled.div`
 
 const GearItem = styled.div`
   background: #2a2a2a;
-  padding: 20px;
-  border-radius: 12px;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
   text-align: center;
   h3 {
-    font-size: 20px;
+    font-size: clamp(1.125rem, 3vw, 1.25rem);
     font-weight: 600;
     color: #ffffff;
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
   }
   ul {
     list-style: none;
     padding: 0;
     li {
-      font-size: 16px;
+      font-size: clamp(0.875rem, 2vw, 1rem);
       font-weight: 400;
       color: #cccccc;
-      margin: 8px 0;
+      margin: 0.5rem 0;
     }
   }
 `;
 
 const ContactSection = styled.section`
-  padding: 60px 40px;
+  padding: clamp(1.5rem, 8vw, 3.75rem) 1rem;
   text-align: center;
   background: #1a1a1a;
 `;
 
 const ContactTitle = styled.h2`
-  font-size: 40px;
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
   font-weight: 600;
-  margin-bottom: 30px;
+  margin-bottom: clamp(1rem, 3vw, 1.875rem);
   color: #00ff99;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 0.125rem;
 `;
 
 const ContactText = styled.p`
-  font-size: 18px;
+  font-size: clamp(0.875rem, 2.5vw, 1.125rem);
   font-weight: 300;
   color: #ffffff;
-  margin: 10px 0;
+  margin: 0.625rem 0;
   a {
     color: #00ff99;
     text-decoration: none;
@@ -217,17 +225,17 @@ const ContactText = styled.p`
 
 const Footer = styled.footer`
   background: #000;
-  padding: 30px 20px;
+  padding: clamp(1.25rem, 5vw, 1.875rem) 1rem;
   text-align: center;
   border-top: 1px solid #00ff99;
   p {
-    font-size: 14px;
-    margin: 5px 0;
+    font-size: clamp(0.75rem, 2vw, 0.875rem);
+    margin: 0.3125rem 0;
     color: #aaaaaa;
   }
   a {
     color: #00ff99;
-    margin: 0 15px;
+    margin: 0 0.625rem;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
@@ -277,15 +285,15 @@ const initialDemoReels = {
 
 function App() {
   const [demoReels, setDemoReels] = useState(initialDemoReels);
-  const [loadedVideos, setLoadedVideos] = useState({}); // Track which videos are loaded
+  const [loadedVideos, setLoadedVideos] = useState({});
 
   useEffect(() => {
-    const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY; // Use environment variable
+    const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
     const fetchAndSortReelsByViews = async () => {
       const allVideoIds = Object.values(initialDemoReels)
         .flat()
         .map(reel => reel.url.split('/embed/')[1]);
-      const uniqueIds = [...new Set(allVideoIds)]; // Remove duplicates if any
+      const uniqueIds = [...new Set(allVideoIds)];
 
       try {
         const response = await fetch(
@@ -305,7 +313,7 @@ function App() {
                 )
               ].find(reel => reel.url.includes(item.id)).title,
             }))
-            .sort((a, b) => b.viewCount - a.viewCount); // Sort by view count, highest first
+            .sort((a, b) => b.viewCount - a.viewCount);
 
           const sortedReels = {
             liveRecordingPostProduction: [],
