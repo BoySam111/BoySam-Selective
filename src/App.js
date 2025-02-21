@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { FaBars } from 'react-icons/fa';
 
 const AppContainer = styled.div`
   background: #1a1a1a;
@@ -7,6 +8,7 @@ const AppContainer = styled.div`
   font-family: 'Montserrat', sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
+  scroll-behavior: smooth; /* Enable smooth scrolling globally */
 `;
 
 const Header = styled.header`
@@ -14,15 +16,14 @@ const Header = styled.header`
   top: 0;
   width: 100%;
   background: rgba(0, 0, 0, 0.9);
-  padding: 20px 40px;
+  padding: 20px 40px 20px 30px; /* Increased right padding */
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   @media (max-width: 768px) {
-    padding: 15px 20px; /* Slightly smaller on mobile */
-    flex-wrap: wrap; /* Allow wrap if needed */
+    padding: 15px 30px 15px 20px; /* Adjusted right padding for mobile */
   }
 `;
 
@@ -31,46 +32,86 @@ const Logo = styled.div`
   font-weight: 700;
   color: #00ff99;
   letter-spacing: 1px;
+  flex-shrink: 0;
   @media (max-width: 480px) {
-    font-size: 20px; /* Slightly smaller on very small screens */
+    font-size: 20px;
   }
 `;
 
 const Nav = styled.nav`
+  display: flex;
+  align-items: center;
+  margin-right: 40px; /* Space on right side of nav */
+
   ul {
     list-style: none;
     display: flex;
-    li {
-      margin-left: 30px;
-      a {
-        color: #ffffff;
-        text-decoration: none;
-        font-size: 16px;
-        font-weight: 500;
-        text-transform: uppercase;
-        transition: color 0.3s ease;
-        &:hover {
-          color: #00ff99;
-        }
-      }
+    margin: 0;
+    padding: 0;
+    flex-wrap: nowrap;
+    @media (max-width: 768px) {
+      display: ${props => (props.isOpen ? 'flex' : 'none')};
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      padding: 20px 0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     }
   }
+
+  li {
+    margin-left: 20px;
+    flex-shrink: 0;
+    @media (max-width: 1200px) {
+      margin-left: 15px; /* Tighter spacing for smaller desktops */
+    }
+    @media (max-width: 768px) {
+      margin: 15px 0;
+    }
+  }
+
+  a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    padding: 8px 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    white-space: nowrap;
+    &:hover {
+      color: #00ff99;
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 50%;
+        height: 2px;
+        background: #00ff99;
+        transform: translateX(-50%);
+      }
+    }
+    @media (max-width: 768px) {
+      font-size: 18px;
+      padding: 10px;
+    }
+  }
+`;
+
+const Hamburger = styled.div`
+  display: none;
+  font-size: 24px;
+  color: #00ff99;
+  cursor: pointer;
+  margin-left: 15px;
+  margin-right: 30px; /* Increased right margin for extra space */
   @media (max-width: 768px) {
-    ul {
-      margin-top: 10px;
-      li {
-        margin-left: 15px; /* Tighter spacing on tablet */
-      }
-    }
-  }
-  @media (max-width: 480px) {
-    ul {
-      flex-wrap: wrap; /* Wrap nav items on very small screens */
-      justify-content: center;
-      li {
-        margin: 5px 10px; /* Even spacing */
-      }
-    }
+    display: block;
   }
 `;
 
@@ -103,10 +144,10 @@ const Hero = styled.section`
     font-weight: 700;
     margin-bottom: 10px;
     @media (max-width: 768px) {
-      font-size: 40px; /* Smaller on tablet */
+      font-size: 40px;
     }
     @media (max-width: 480px) {
-      font-size: 30px; /* Even smaller on mobile */
+      font-size: 30px;
     }
   }
   p {
@@ -123,8 +164,9 @@ const CategorySection = styled.section`
   padding: 60px 20px;
   text-align: center;
   background: #1a1a1a;
+  scroll-margin-top: 80px; /* Offset for fixed header */
   @media (max-width: 768px) {
-    padding: 40px 15px; /* Reduced padding on smaller screens */
+    padding: 40px 15px;
   }
 `;
 
@@ -132,6 +174,17 @@ const GearSection = styled.section`
   padding: 60px 20px;
   text-align: center;
   background: #1a1a1a;
+  scroll-margin-top: 80px; /* Offset for fixed header */
+  @media (max-width: 768px) {
+    padding: 40px 15px;
+  }
+`;
+
+const ContactSection = styled.section`
+  padding: 60px 20px;
+  text-align: center;
+  background: #1a1a1a;
+  scroll-margin-top: 80px; /* Offset for fixed header */
   @media (max-width: 768px) {
     padding: 40px 15px;
   }
@@ -165,12 +218,12 @@ const GearTitle = styled.h2`
 
 const ReelGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjusted min to 300px */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
   @media (max-width: 480px) {
-    grid-template-columns: 1fr; /* Single column on mobile */
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -195,12 +248,13 @@ const Reel = styled.div`
     transform: translateY(-10px);
     box-shadow: 0 10px 20px rgba(0, 255, 153, 0.2);
   }
-  img, iframe {
+  img,
+  iframe {
     width: 100%;
-    height: 220px; /* Keep original height */
+    height: 220px;
     border: none;
     border-radius: 8px;
-    object-fit: cover; /* Maintain quality */
+    object-fit: cover;
   }
   p {
     margin-top: 10px;
@@ -230,15 +284,6 @@ const GearItem = styled.div`
       color: #cccccc;
       margin: 8px 0;
     }
-  }
-`;
-
-const ContactSection = styled.section`
-  padding: 60px 20px;
-  text-align: center;
-  background: #1a1a1a;
-  @media (max-width: 768px) {
-    padding: 40px 15px;
   }
 `;
 
@@ -308,6 +353,7 @@ const initialDemoReels = {
     { url: 'https://www.youtube.com/embed/ot0OIzkwqqE', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/f2_NQQ3e5es', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/hxGLxaPMm0w', title: 'Recording, Digital Editing, Mixing, Mastering' },
+    { url: 'https://www.youtube.com/embed/oOCohtdjskE', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/NJpqglKw1zE', title: 'Recording, Digital Editing, Mixing, Mastering' },
   ],
   records: [
@@ -335,6 +381,7 @@ const initialDemoReels = {
 function App() {
   const [demoReels, setDemoReels] = useState(initialDemoReels);
   const [loadedVideos, setLoadedVideos] = useState({});
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   useEffect(() => {
     const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
@@ -394,19 +441,38 @@ function App() {
     }));
   };
 
+  const handleNavClick = (e) => {
+    e.preventDefault(); // Prevent default anchor behavior
+    const targetId = e.currentTarget.getAttribute('href').substring(1); // Remove the '#' from href
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      window.scrollTo({
+        top: targetElement.offsetTop - 80, // Offset for 80px header height
+        behavior: 'smooth', // Smooth scrolling
+      });
+    }
+    // Close mobile nav if open
+    setIsNavOpen(false);
+  };
+
+  const toggleNav = () => {
+    setIsNavOpen(prev => !prev);
+  };
+
   return (
     <AppContainer>
       <Header>
         <Logo>BoySamSelective</Logo>
-        <Nav>
+        <Nav isOpen={isNavOpen}>
           <ul>
-            <li><a href="#live-recording-post-production">Live Recording</a></li>
-            <li><a href="#records">Records</a></li>
-            <li><a href="#live-production">Live Production</a></li>
-            <li><a href="#gear-software">Gear & Software</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#live-recording-post-production" onClick={handleNavClick}>Live Recording</a></li>
+            <li><a href="#records" onClick={handleNavClick}>Records</a></li>
+            <li><a href="#live-production" onClick={handleNavClick}>Live Production</a></li>
+            <li><a href="#gear-software" onClick={handleNavClick}>Gear & Software</a></li>
+            <li><a href="#contact" onClick={handleNavClick}>Contact</a></li>
           </ul>
         </Nav>
+        <Hamburger onClick={toggleNav}><FaBars /></Hamburger>
       </Header>
 
       <Hero>
