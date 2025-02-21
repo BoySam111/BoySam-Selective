@@ -137,9 +137,16 @@ const Reel = styled.div`
   padding: 20px;
   border-radius: 12px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
   &:hover {
     transform: translateY(-10px);
     box-shadow: 0 10px 20px rgba(0, 255, 153, 0.2);
+  }
+  img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
   }
   iframe {
     width: 100%;
@@ -159,7 +166,7 @@ const GearItem = styled.div`
   background: #2a2a2a;
   padding: 20px;
   border-radius: 12px;
-  text-align: center; /* Changed from text-align: left to center */
+  text-align: center;
   h3 {
     font-size: 20px;
     font-weight: 600;
@@ -270,9 +277,10 @@ const initialDemoReels = {
 
 function App() {
   const [demoReels, setDemoReels] = useState(initialDemoReels);
+  const [loadedVideos, setLoadedVideos] = useState({}); // Track which videos are loaded
 
   useEffect(() => {
-    const apiKey = 'REACT_APP_YOUTUBE_API_KEY'; // Replace with your actual API key
+    const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY; // Use environment variable
     const fetchAndSortReelsByViews = async () => {
       const allVideoIds = Object.values(initialDemoReels)
         .flat()
@@ -322,6 +330,13 @@ function App() {
     fetchAndSortReelsByViews();
   }, []);
 
+  const handleThumbnailClick = (category, index) => {
+    setLoadedVideos(prev => ({
+      ...prev,
+      [`${category}-${index}`]: true,
+    }));
+  };
+
   return (
     <AppContainer>
       <Header>
@@ -345,36 +360,66 @@ function App() {
       <CategorySection id="live-recording-post-production">
         <CategoryTitle>Live Recording & Post Production</CategoryTitle>
         <ReelGrid>
-          {demoReels.liveRecordingPostProduction.map((reel, index) => (
-            <Reel key={index}>
-              <iframe src={reel.url} title={reel.title} allowFullScreen></iframe>
-              <p>{reel.title}</p>
-            </Reel>
-          ))}
+          {demoReels.liveRecordingPostProduction.map((reel, index) => {
+            const videoId = reel.url.split('/embed/')[1];
+            const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            const isLoaded = loadedVideos[`liveRecordingPostProduction-${index}`];
+
+            return (
+              <Reel key={index} onClick={() => !isLoaded && handleThumbnailClick('liveRecordingPostProduction', index)}>
+                {isLoaded ? (
+                  <iframe src={reel.url} title={reel.title} allowFullScreen></iframe>
+                ) : (
+                  <img src={thumbnailUrl} alt={reel.title} />
+                )}
+                <p>{reel.title}</p>
+              </Reel>
+            );
+          })}
         </ReelGrid>
       </CategorySection>
 
       <CategorySection id="records">
         <CategoryTitle>Records</CategoryTitle>
         <ReelGrid>
-          {demoReels.records.map((reel, index) => (
-            <Reel key={index}>
-              <iframe src={reel.url} title={reel.title} allowFullScreen></iframe>
-              <p>{reel.title}</p>
-            </Reel>
-          ))}
+          {demoReels.records.map((reel, index) => {
+            const videoId = reel.url.split('/embed/')[1];
+            const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            const isLoaded = loadedVideos[`records-${index}`];
+
+            return (
+              <Reel key={index} onClick={() => !isLoaded && handleThumbnailClick('records', index)}>
+                {isLoaded ? (
+                  <iframe src={reel.url} title={reel.title} allowFullScreen></iframe>
+                ) : (
+                  <img src={thumbnailUrl} alt={reel.title} />
+                )}
+                <p>{reel.title}</p>
+              </Reel>
+            );
+          })}
         </ReelGrid>
       </CategorySection>
 
       <CategorySection id="live-production">
         <CategoryTitle>Live Production</CategoryTitle>
         <ReelGrid>
-          {demoReels.liveProduction.map((reel, index) => (
-            <Reel key={index}>
-              <iframe src={reel.url} title={reel.title} allowFullScreen></iframe>
-              <p>{reel.title}</p>
-            </Reel>
-          ))}
+          {demoReels.liveProduction.map((reel, index) => {
+            const videoId = reel.url.split('/embed/')[1];
+            const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            const isLoaded = loadedVideos[`liveProduction-${index}`];
+
+            return (
+              <Reel key={index} onClick={() => !isLoaded && handleThumbnailClick('liveProduction', index)}>
+                {isLoaded ? (
+                  <iframe src={reel.url} title={reel.title} allowFullScreen></iframe>
+                ) : (
+                  <img src={thumbnailUrl} alt={reel.title} />
+                )}
+                <p>{reel.title}</p>
+              </Reel>
+            );
+          })}
         </ReelGrid>
       </CategorySection>
 
