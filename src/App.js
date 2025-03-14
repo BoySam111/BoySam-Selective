@@ -8,7 +8,7 @@ const AppContainer = styled.div`
   font-family: 'Montserrat', sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
-  scroll-behavior: smooth; /* Enable smooth scrolling globally */
+  scroll-behavior: smooth;
 `;
 
 const Header = styled.header`
@@ -16,14 +16,14 @@ const Header = styled.header`
   top: 0;
   width: 100%;
   background: rgba(0, 0, 0, 0.9);
-  padding: 20px 40px 20px 30px; /* Increased right padding */
+  padding: 20px 40px 20px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   @media (max-width: 768px) {
-    padding: 15px 30px 15px 20px; /* Adjusted right padding for mobile */
+    padding: 15px 30px 15px 20px;
   }
 `;
 
@@ -41,7 +41,7 @@ const Logo = styled.div`
 const Nav = styled.nav`
   display: flex;
   align-items: center;
-  margin-right: 40px; /* Space on right side of nav */
+  margin-right: 40px;
 
   ul {
     list-style: none;
@@ -66,7 +66,7 @@ const Nav = styled.nav`
     margin-left: 20px;
     flex-shrink: 0;
     @media (max-width: 1200px) {
-      margin-left: 15px; /* Tighter spacing for smaller desktops */
+      margin-left: 15px;
     }
     @media (max-width: 768px) {
       margin: 15px 0;
@@ -109,7 +109,7 @@ const Hamburger = styled.div`
   color: #00ff99;
   cursor: pointer;
   margin-left: 15px;
-  margin-right: 30px; /* Increased right margin for extra space */
+  margin-right: 30px;
   @media (max-width: 768px) {
     display: block;
   }
@@ -164,7 +164,7 @@ const CategorySection = styled.section`
   padding: 60px 20px;
   text-align: center;
   background: #1a1a1a;
-  scroll-margin-top: 80px; /* Offset for fixed header */
+  scroll-margin-top: 80px;
   @media (max-width: 768px) {
     padding: 40px 15px;
   }
@@ -174,7 +174,7 @@ const GearSection = styled.section`
   padding: 60px 20px;
   text-align: center;
   background: #1a1a1a;
-  scroll-margin-top: 80px; /* Offset for fixed header */
+  scroll-margin-top: 80px;
   @media (max-width: 768px) {
     padding: 40px 15px;
   }
@@ -184,7 +184,7 @@ const ContactSection = styled.section`
   padding: 60px 20px;
   text-align: center;
   background: #1a1a1a;
-  scroll-margin-top: 80px; /* Offset for fixed header */
+  scroll-margin-top: 80px;
   @media (max-width: 768px) {
     padding: 40px 15px;
   }
@@ -224,6 +224,29 @@ const ReelGrid = styled.div`
   margin: 0 auto;
   @media (max-width: 480px) {
     grid-template-columns: 1fr;
+  }
+`;
+
+const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 10px;
+`;
+
+const PageButton = styled.button`
+  background: ${props => (props.active ? '#00ff99' : '#2a2a2a')};
+  color: ${props => (props.active ? '#1a1a1a' : '#ffffff')};
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+  &:hover {
+    background: #00ff99;
+    color: #1a1a1a;
   }
 `;
 
@@ -353,16 +376,15 @@ const initialDemoReels = {
     { url: 'https://www.youtube.com/embed/ot0OIzkwqqE', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/f2_NQQ3e5es', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/hxGLxaPMm0w', title: 'Recording, Digital Editing, Mixing, Mastering' },
-    { url: 'https://www.youtube.com/embed/oOCohtdjskE', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/NJpqglKw1zE', title: 'Recording, Digital Editing, Mixing, Mastering' },
-    { url: 'https://www.youtube.com/embed/oMDIxXJg34Y', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/McDRfDAkfhU', title: 'Recording, Digital Editing, Mixing, Mastering' },
+    { url: 'https://www.youtube.com/embed/oMDIxXJg34Y', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/eFRqohRC1Mk', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/ws117hmBbY4', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/kkv0TWDvbxk', title: 'Recording, Digital Editing, Mixing, Mastering' },
-    { url: 'https://www.youtube.com/embed/09HfLbvBIIw&pp=0gcJCUUJAYcqIYzv', title: 'Recording, Digital Editing, Mixing, Mastering' },
+    { url: 'https://www.youtube.com/embed/09HfLbvBIIw', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/z8W4KCb37MU', title: 'Recording, Digital Editing, Mixing, Mastering' },
-    { url: 'https://www.youtube.com/embed/J9tMt_ex5Pk', title: 'Recording,' },
+    { url: 'https://www.youtube.com/embed/J9tMt_ex5Pk', title: 'Recording' },
   ],
   records: [
     { url: 'https://www.youtube.com/embed/xc9AZxR5Whs', title: 'Recording, Digital Editing, Mixing, Mastering' },
@@ -390,6 +412,13 @@ function App() {
   const [demoReels, setDemoReels] = useState(initialDemoReels);
   const [loadedVideos, setLoadedVideos] = useState({});
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [pages, setPages] = useState({
+    liveRecordingPostProduction: 1,
+    records: 1,
+    liveProduction: 1,
+  });
+
+  const ITEMS_PER_PAGE = 9;
 
   useEffect(() => {
     const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
@@ -450,21 +479,45 @@ function App() {
   };
 
   const handleNavClick = (e) => {
-    e.preventDefault(); // Prevent default anchor behavior
-    const targetId = e.currentTarget.getAttribute('href').substring(1); // Remove the '#' from href
+    e.preventDefault();
+    const targetId = e.currentTarget.getAttribute('href').substring(1);
     const targetElement = document.getElementById(targetId);
     if (targetElement) {
       window.scrollTo({
-        top: targetElement.offsetTop - 80, // Offset for 80px header height
-        behavior: 'smooth', // Smooth scrolling
+        top: targetElement.offsetTop - 80,
+        behavior: 'smooth',
       });
     }
-    // Close mobile nav if open
     setIsNavOpen(false);
+  };
+
+  const handlePageChange = (category, page) => {
+    const sectionElement = document.getElementById(category === 'liveRecordingPostProduction' ? 'live-recording-post-production' : category === 'records' ? 'records' : 'live-production');
+    if (sectionElement) {
+      const sectionTop = sectionElement.offsetTop - 80; // Adjust for header height
+      window.scrollTo({
+        top: sectionTop,
+        behavior: 'smooth',
+      });
+    }
+    setPages(prev => ({
+      ...prev,
+      [category]: page,
+    }));
   };
 
   const toggleNav = () => {
     setIsNavOpen(prev => !prev);
+  };
+
+  const getPaginatedReels = (category) => {
+    const startIndex = (pages[category] - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    return demoReels[category].slice(startIndex, endIndex);
+  };
+
+  const getPageCount = (category) => {
+    return Math.ceil(demoReels[category].length / ITEMS_PER_PAGE);
   };
 
   return (
@@ -491,7 +544,7 @@ function App() {
       <CategorySection id="live-recording-post-production">
         <CategoryTitle>Live Recording & Post Production</CategoryTitle>
         <ReelGrid>
-          {demoReels.liveRecordingPostProduction.map((reel, index) => {
+          {getPaginatedReels('liveRecordingPostProduction').map((reel, index) => {
             const videoId = reel.url.split('/embed/')[1];
             const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
             const isLoaded = loadedVideos[`liveRecordingPostProduction-${index}`];
@@ -508,12 +561,23 @@ function App() {
             );
           })}
         </ReelGrid>
+        <Pagination>
+          {Array.from({ length: getPageCount('liveRecordingPostProduction') }, (_, i) => i + 1).map(page => (
+            <PageButton
+              key={page}
+              active={pages.liveRecordingPostProduction === page}
+              onClick={() => handlePageChange('liveRecordingPostProduction', page)}
+            >
+              {page}
+            </PageButton>
+          ))}
+        </Pagination>
       </CategorySection>
 
       <CategorySection id="records">
         <CategoryTitle>Records</CategoryTitle>
         <ReelGrid>
-          {demoReels.records.map((reel, index) => {
+          {getPaginatedReels('records').map((reel, index) => {
             const videoId = reel.url.split('/embed/')[1];
             const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
             const isLoaded = loadedVideos[`records-${index}`];
@@ -530,12 +594,23 @@ function App() {
             );
           })}
         </ReelGrid>
+        <Pagination>
+          {Array.from({ length: getPageCount('records') }, (_, i) => i + 1).map(page => (
+            <PageButton
+              key={page}
+              active={pages.records === page}
+              onClick={() => handlePageChange('records', page)}
+            >
+              {page}
+            </PageButton>
+          ))}
+        </Pagination>
       </CategorySection>
 
       <CategorySection id="live-production">
         <CategoryTitle>Live Production</CategoryTitle>
         <ReelGrid>
-          {demoReels.liveProduction.map((reel, index) => {
+          {getPaginatedReels('liveProduction').map((reel, index) => {
             const videoId = reel.url.split('/embed/')[1];
             const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
             const isLoaded = loadedVideos[`liveProduction-${index}`];
@@ -552,6 +627,17 @@ function App() {
             );
           })}
         </ReelGrid>
+        <Pagination>
+          {Array.from({ length: getPageCount('liveProduction') }, (_, i) => i + 1).map(page => (
+            <PageButton
+              key={page}
+              active={pages.liveProduction === page}
+              onClick={() => handlePageChange('liveProduction', page)}
+            >
+              {page}
+            </PageButton>
+          ))}
+        </Pagination>
       </CategorySection>
 
       <GearSection id="gear-software">
