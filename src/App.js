@@ -385,6 +385,10 @@ const initialDemoReels = {
     { url: 'https://www.youtube.com/embed/09HfLbvBIIw', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/z8W4KCb37MU', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/J9tMt_ex5Pk', title: 'Recording' },
+    { url: 'https://www.youtube.com/embed/op5laa7otwA', title: 'Recording, Digital Editing, Mixing, Mastering' },
+    { url: 'https://www.youtube.com/embed/RKseZDtXStM', title: 'Recording, Digital Editing, Mixing, Mastering' },
+    { url: 'https://www.youtube.com/embed/tA0BN-S6yIs', title: 'Recording, Digital Editing, Mixing, Mastering' },
+
   ],
   records: [
     { url: 'https://www.youtube.com/embed/xc9AZxR5Whs', title: 'Recording, Digital Editing, Mixing, Mastering' },
