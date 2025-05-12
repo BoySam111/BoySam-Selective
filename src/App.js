@@ -404,6 +404,9 @@ const initialDemoReels = {
     { url: 'https://www.youtube.com/embed/IEndCLfz6vU', title: 'Producer, Composer, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/f_Q1fvMYiFE', title: 'Producer, Composer, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/ehi52Fi1KT4', title: 'Producer, Composer, Mixing, Mastering' },
+    { url: 'https://www.youtube.com/embed/CfahVLhBAOE', title: 'Mixing, Mastering' },
+
+    
   ],
   liveProduction: [
     { url: 'https://www.youtube.com/embed/swM0-8jy8K4', title: 'Producer' },
