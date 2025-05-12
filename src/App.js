@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FaBars } from 'react-icons/fa';
 
+// Load custom order (in production, this could be bundled or fetched)
+import customOrder from './custom_order.json'; // Create this file in src/
+
 const AppContainer = styled.div`
   background: #1a1a1a;
   color: #ffffff;
@@ -385,23 +388,6 @@ const initialDemoReels = {
     { url: 'https://www.youtube.com/embed/09HfLbvBIIw', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/z8W4KCb37MU', title: 'Recording, Digital Editing, Mixing, Mastering' },
     { url: 'https://www.youtube.com/embed/J9tMt_ex5Pk', title: 'Recording' },
-    { url: 'https://www.youtube.com/embed/op5laa7otwA', title: 'Recording, Digital Editing, Mixing, Mastering' },
-    { url: 'https://www.youtube.com/embed/RKseZDtXStM', title: 'Recording, Digital Editing, Mixing, Mastering' },
-    { url: 'https://www.youtube.com/embed/tA0BN-S6yIs', title: 'Recording, Digital Editing, Mixing, Mastering' },
-    { url: 'https://www.youtube.com/embed/AAifOk6qiog', title: 'Recording, Digital Editing, Mixing, Mastering' },
-    { url: 'https://www.youtube.com/embed/XruBl-0nqVw', title: 'Recording' },
-    { url: 'https://www.youtube.com/embed/8kfA0rbnZQA', title: 'Recording, Mixing, Mastering' },
-    { url: 'https://www.youtube.com/embed/6wWc48GPWTE', title: 'Recording' },
-    { url: 'https://www.youtube.com/embed/6vSW1-mkZWs', title: 'Recording, Mixing, Mastering' },
-    { url: 'https://www.youtube.com/embed/gjfv3cJF68A', title: 'Recording' },
-    { url: 'https://www.youtube.com/embed/7cgltGp0274', title: 'Recording, Digital Editing, Mixing, Mastering' },
-    { url: 'https://www.youtube.com/embed/ySA4W3r8afg', title: 'Recording, Mixing, Mastering' },
-    { url: 'https://www.youtube.com/embed/DIuQawoenOw', title: 'Recording, Digital Editing, Mixing, Mastering' },
-
-
-
-
-
   ],
   records: [
     { url: 'https://www.youtube.com/embed/xc9AZxR5Whs', title: 'Recording, Digital Editing, Mixing, Mastering' },
@@ -462,8 +448,7 @@ function App() {
                   initialDemoReels[key].some(reel => reel.url.includes(item.id))
                 )
               ].find(reel => reel.url.includes(item.id)).title,
-            }))
-            .sort((a, b) => b.viewCount - a.viewCount);
+            }));
 
           const sortedReels = {
             liveRecordingPostProduction: [],
@@ -471,11 +456,25 @@ function App() {
             liveProduction: [],
           };
 
-          sortedData.forEach(item => {
-            const category = Object.keys(initialDemoReels).find(key =>
-              initialDemoReels[key].some(reel => reel.url === item.url)
-            );
-            sortedReels[category].push({ url: item.url, title: item.title });
+          // Apply custom order if defined, otherwise sort by view count
+          Object.keys(sortedReels).forEach(category => {
+            const customOrderForCategory = customOrder[category] || [];
+            const categoryItems = sortedData
+              .filter(item => initialDemoReels[category].some(reel => reel.url.includes(item.id)))
+              .sort((a, b) => {
+                const aIndex = customOrderForCategory.indexOf(a.id);
+                const bIndex = customOrderForCategory.indexOf(b.id);
+                if (aIndex !== -1 && bIndex !== -1) {
+                  return aIndex - bIndex; // Custom order
+                }
+                if (aIndex !== -1) return -1;
+                if (bIndex !== -1) return 1;
+                return b.viewCount - a.viewCount; // Fallback to view count
+              });
+            sortedReels[category] = categoryItems.map(item => ({
+              url: item.url,
+              title: item.title,
+            }));
           });
 
           setDemoReels(sortedReels);
@@ -511,7 +510,7 @@ function App() {
   const handlePageChange = (category, page) => {
     const sectionElement = document.getElementById(category === 'liveRecordingPostProduction' ? 'live-recording-post-production' : category === 'records' ? 'records' : 'live-production');
     if (sectionElement) {
-      const sectionTop = sectionElement.offsetTop - 80; // Adjust for header height
+      const sectionTop = sectionElement.offsetTop - 80;
       window.scrollTo({
         top: sectionTop,
         behavior: 'smooth',
@@ -543,8 +542,8 @@ function App() {
         <Logo>BoySamSelective</Logo>
         <Nav isOpen={isNavOpen}>
           <ul>
-            <li><a href="#live-recording-post-production" onClick={handleNavClick}>Live Recording</a></li>
             <li><a href="#records" onClick={handleNavClick}>Records</a></li>
+            <li><a href="#live-recording-post-production" onClick={handleNavClick}>Live Recording</a></li>
             <li><a href="#live-production" onClick={handleNavClick}>Live Production</a></li>
             <li><a href="#gear-software" onClick={handleNavClick}>Gear & Software</a></li>
             <li><a href="#contact" onClick={handleNavClick}>Contact</a></li>
@@ -557,39 +556,6 @@ function App() {
         <h1>BoySamSelective</h1>
         <p>Crafting Soundscapes with Precision and Passion</p>
       </Hero>
-
-      <CategorySection id="live-recording-post-production">
-        <CategoryTitle>Live Recording & Post Production</CategoryTitle>
-        <ReelGrid>
-          {getPaginatedReels('liveRecordingPostProduction').map((reel, index) => {
-            const videoId = reel.url.split('/embed/')[1];
-            const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-            const isLoaded = loadedVideos[`liveRecordingPostProduction-${index}`];
-
-            return (
-              <Reel key={index} onClick={() => !isLoaded && handleThumbnailClick('liveRecordingPostProduction', index)}>
-                {isLoaded ? (
-                  <iframe src={reel.url} title={reel.title} allowFullScreen></iframe>
-                ) : (
-                  <img src={thumbnailUrl} alt={reel.title} />
-                )}
-                <p>{reel.title}</p>
-              </Reel>
-            );
-          })}
-        </ReelGrid>
-        <Pagination>
-          {Array.from({ length: getPageCount('liveRecordingPostProduction') }, (_, i) => i + 1).map(page => (
-            <PageButton
-              key={page}
-              active={pages.liveRecordingPostProduction === page}
-              onClick={() => handlePageChange('liveRecordingPostProduction', page)}
-            >
-              {page}
-            </PageButton>
-          ))}
-        </Pagination>
-      </CategorySection>
 
       <CategorySection id="records">
         <CategoryTitle>Records</CategoryTitle>
@@ -617,6 +583,39 @@ function App() {
               key={page}
               active={pages.records === page}
               onClick={() => handlePageChange('records', page)}
+            >
+              {page}
+            </PageButton>
+          ))}
+        </Pagination>
+      </CategorySection>
+
+      <CategorySection id="live-recording-post-production">
+        <CategoryTitle>Live Recording & Post Production</CategoryTitle>
+        <ReelGrid>
+          {getPaginatedReels('liveRecordingPostProduction').map((reel, index) => {
+            const videoId = reel.url.split('/embed/')[1];
+            const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            const isLoaded = loadedVideos[`liveRecordingPostProduction-${index}`];
+
+            return (
+              <Reel key={index} onClick={() => !isLoaded && handleThumbnailClick('liveRecordingPostProduction', index)}>
+                {isLoaded ? (
+                  <iframe src={reel.url} title={reel.title} allowFullScreen></iframe>
+                ) : (
+                  <img src={thumbnailUrl} alt={reel.title} />
+                )}
+                <p>{reel.title}</p>
+              </Reel>
+            );
+          })}
+        </ReelGrid>
+        <Pagination>
+          {Array.from({ length: getPageCount('liveRecordingPostProduction') }, (_, i) => i + 1).map(page => (
+            <PageButton
+              key={page}
+              active={pages.liveRecordingPostProduction === page}
+              onClick={() => handlePageChange('liveRecordingPostProduction', page)}
             >
               {page}
             </PageButton>
